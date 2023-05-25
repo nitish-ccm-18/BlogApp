@@ -33,18 +33,18 @@ Route::get('/users/profile/edit', [UserController::class,'editProfilePage'])->mi
 Route::post('/users/profile/edit', [UserController::class,'editProfile'])->middleware('auth');
 
 // Admin Home Controller
-Route::get('/admin',[AdminController::class,'index']);
+Route::get('/admin',[AdminController::class,'index'])->middleware('isAdmin');
 
 // Admin Create User
-Route::get('/admin/user/create',[AdminController::class,'createPage']);
-Route::post('/admin/user/create',[AdminController::class,'create']);
+Route::get('/admin/user/create',[AdminController::class,'createPage'])->middleware('isAdmin');
+Route::post('/admin/user/create',[AdminController::class,'create'])->middleware('isAdmin');
 
 // Show User Page
-Route::get('/admin/user/show/{id}',[AdminController::class,'show']);
+Route::get('/admin/user/show/{id}',[AdminController::class,'show'])->middleware('isAdmin');;
 
 // Edit User page
-Route::get('/admin/user/edit/{id}',[AdminController::class,'editPage']);
-Route::post('/admin/user/edit/{id}',[AdminController::class,'edit']);
+Route::get('/admin/user/edit/{id}',[AdminController::class,'editPage'])->middleware('isAdmin');;
+Route::post('/admin/user/edit/{id}',[AdminController::class,'edit'])->middleware('isAdmin');
 
 //Delete User
 Route::get('/admin/user/delete/{id}', [AdminController::class,'delete']);

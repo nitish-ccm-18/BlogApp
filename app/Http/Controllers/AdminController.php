@@ -30,7 +30,7 @@ class AdminController extends Controller
         // Store filename as per database storage
         $filename = "";
         if($picture != "" ) {
-            $filename = date('YmdHi').$picture->getClientOriginalName();
+            $filename = time().$picture->getClientOriginalName();
             $picture->move(public_path('public/Image'), $filename);
         }
 

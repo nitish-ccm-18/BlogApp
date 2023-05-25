@@ -22,4 +22,13 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // User Profile->Only authenticated user can see this page
-Route::get('/users/me', [UserController::class,'showProfile'])->middleware('auth');
+Route::get('/users/profile', [UserController::class,'showProfile'])->middleware('auth');
+
+
+// Get User Profile Edit Page
+Route::get('/users/profile/edit', [UserController::class,'editProfilePage'])->middleware('auth');
+
+// Edit Profile->Only authenticated user can see this page
+Route::post('/users/profile/edit', [UserController::class,'editProfile'])->middleware('auth');
+
+

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,4 +32,19 @@ Route::get('/users/profile/edit', [UserController::class,'editProfilePage'])->mi
 // Edit Profile->Only authenticated user can see this page
 Route::post('/users/profile/edit', [UserController::class,'editProfile'])->middleware('auth');
 
+// Admin Home Controller
+Route::get('/admin',[AdminController::class,'index']);
 
+// Admin Create User
+Route::get('/admin/user/create',[AdminController::class,'createPage']);
+Route::post('/admin/user/create',[AdminController::class,'create']);
+
+// Show User Page
+Route::get('/admin/user/show/{id}',[AdminController::class,'show']);
+
+// Edit User page
+Route::get('/admin/user/edit/{id}',[AdminController::class,'editPage']);
+Route::post('/admin/user/edit/{id}',[AdminController::class,'edit']);
+
+//Delete User
+Route::get('/admin/user/delete/{id}', [AdminController::class,'delete']);

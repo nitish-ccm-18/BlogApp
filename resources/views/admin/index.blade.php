@@ -23,7 +23,6 @@
                 <tr>
                     <th>Profile Picture</th>
                     <th>Name</th>
-                    <th>Email</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -33,7 +32,6 @@
                 <tr>
                     <td><img src="{{ url('public/Image/'.$user->profile_picture) }}" alt="User Profile Picture" height="50" width="50"></td>
                     <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
                     <td><a href="/admin/user/show/{{ $user->id }}">Show</a></td>
                     <td><a href="/admin/user/edit/{{ $user->id }}">Edit</a></td>
                     <td><a href="/admin/user/delete/{{ $user->id }}">Delete</a></td>

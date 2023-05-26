@@ -83,7 +83,7 @@ class AdminController extends Controller
             }
             
             $file= $request->file('UserProfile');
-            $filename= date('YmdHi').$file->getClientOriginalName();
+            $filename= time().$file->getClientOriginalName();
             $file-> move(public_path('public/Image'), $filename);
         }
         

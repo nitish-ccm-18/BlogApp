@@ -39,7 +39,7 @@ class UserController extends Controller
         // Store filename as per database storage
         $filename = "";
         if($picture != "" ) {
-            $filename = date('YmdHi').$picture->getClientOriginalName();
+            $filename = time().$picture->getClientOriginalName();
             $picture->move(public_path('public/Image'), $filename);
             $user = DB::update('update users set name = ?, profile_picture = ? where id = ?',[$name,$filename,$user_id]);
 

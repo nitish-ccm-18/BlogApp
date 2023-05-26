@@ -10,8 +10,8 @@ use App\Models\Identitycard;
 
 class AdminController extends Controller
 {
+    // List all users
     public function index() {
-        // $users = DB::select('select * from users where user_type = "member"');
         $users = User::all()->where('user_type','member');
         return view('admin.index',['users'=>$users]);
     }
@@ -26,15 +26,8 @@ class AdminController extends Controller
     // Create User
     public function create(Request $request) {
 
-        
-
-        $name = $request->input('UserName');
-        $email = $request->input('UserEmail');
-        $password = Hash::make($request->input('UserPassword'));
 
         $picture = $request->file('UserProfile');
-       
-
         // Store filename as per database storage
         $filename = "";
         if($picture != "" ) {
@@ -42,7 +35,7 @@ class AdminController extends Controller
             $picture->move(public_path('public/Image'), $filename);
         }
 
-
+        // Save user values to users table
         $user = new User;
         $user->name = $request->input('UserName');
         $user->email = $request->input('UserEmail');
@@ -50,14 +43,14 @@ class AdminController extends Controller
         $user->password = Hash::make($request->input('UserPassword'));
         $user->save();
 
-
+        // Save identity card values to their table
         $identity = new Identitycard;
         $identity->user_id = $user->id;
         $identity->identity_number = rand(1000000,9999999);
         $identity->phone_number = rand(100000000,999999999);
         $identity->save();
 
-      return redirect('/admin');
+        return redirect('/admin');
     }
 
     // View User
@@ -77,9 +70,9 @@ class AdminController extends Controller
         $filename = "";
         if($request->file('UserProfile') ){
             // remove existing file
-            $image = DB::select('select profile_picture from users where id = ?',[$id]);
-            if(file_exists(public_path().'/public/Image/'.$image[0]->profile_picture) && $image[0]->profile_picture){
-                unlink(public_path().'/public/Image/'.$image[0]->profile_picture);
+            $image = User::find($id);;
+            if(file_exists(public_path().'/public/Image/'.$image->profile_picture) && $image->profile_picture){
+                unlink(public_path().'/public/Image/'.$image->profile_picture);
             }
             
             $file= $request->file('UserProfile');
@@ -88,19 +81,24 @@ class AdminController extends Controller
         }
         
         if($filename == "") {
-            DB::update("UPDATE `users` SET `name`=?  WHERE id = ?",
-            [$request->input('UserName'),$id]);
+            $user = User::find($id);
+            $user->name = $request->input('UserName');
+            $user->save();
 
-            DB::update("UPDATE `identitycards` SET `phone_number`=?  WHERE user_id = ?",
-            [$request->input('UserPhone'),$id]);
+            $identitycard = Identitycard::where('user_id',$id);
+            $identitycard->phone_number = $request->input('UserPhone');
+            $identitycard->save();
+
         }
-
         else {
-            DB::update("UPDATE `users` SET `name`=?, `profile_picture`= ? WHERE id = ?",
-            [$request->input('UserName'),$filename,$id]);
+            $user = User::find($id);
+            $user->name = $request->input('UserName');
+            $user->profile_picture = $filename;
+            $user->save();
 
-            DB::update("UPDATE `identitycards` SET `phone_number`=?  WHERE user_id = ?",
-            [$request->input('UserPhone'),$id]);
+            $identitycard = Identitycard::where('user_id',$id);
+            $identitycard->phone_number = $request->input('UserPhone');
+            $identitycard->save();
         }
         
         return redirect('/admin');

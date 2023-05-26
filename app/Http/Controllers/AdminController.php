@@ -70,7 +70,7 @@ class AdminController extends Controller
         $filename = "";
         if($request->file('UserProfile') ){
             // remove existing file
-            $image = User::find($id);;
+            $image =  User::find($id);;
             if(file_exists(public_path().'/public/Image/'.$image->profile_picture) && $image->profile_picture){
                 unlink(public_path().'/public/Image/'.$image->profile_picture);
             }
@@ -79,27 +79,34 @@ class AdminController extends Controller
             $filename= time().$file->getClientOriginalName();
             $file-> move(public_path('public/Image'), $filename);
         }
-        
+        $name = $request->input('UserName');
+        $phone = $request->input('UserPhone');
+
         if($filename == "") {
+            $user = new User;
             $user = User::find($id);
-            $user->name = $request->input('UserName');
+            $user->name = $name;
             $user->save();
 
+            $identitycard = new Identitycard;
             $identitycard = Identitycard::where('user_id',$id);
-            $identitycard->phone_number = $request->input('UserPhone');
+            $identitycard->phone_number = $phone;
             $identitycard->save();
 
         }
         else {
+            $user = new User;
             $user = User::find($id);
-            $user->name = $request->input('UserName');
+            $user->name = $name;
             $user->profile_picture = $filename;
             $user->save();
 
+            $identitycard = new Identitycard;
             $identitycard = Identitycard::where('user_id',$id);
-            $identitycard->phone_number = $request->input('UserPhone');
+            $identitycard->phone_number = $phone;
             $identitycard->save();
         }
+        return $request::all();
         
         return redirect('/admin');
     }

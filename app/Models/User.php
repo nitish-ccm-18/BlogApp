@@ -46,4 +46,8 @@ class User extends Authenticatable
     public function identitycards():HasOne {
         return $this->hasOne(Identitycard::class,'user_id');
     }
+
+    public function posts():HasMany {
+        return $this->hasMany(Post::class,'user_id');
+    }
 }

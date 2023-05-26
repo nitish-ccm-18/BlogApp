@@ -108,17 +108,14 @@ class AdminController extends Controller
 
     // Delete User
     public function delete($id) {
-        $image = DB::select('select profile_picture from users where id = ?',[$id]);
-        echo $id;
-        if($image[0]->profile_picture) {
-            if(file_exists(public_path().'/public/Image/'.$image[0]->profile_picture)){
-                unlink(public_path().'/public/Image/'.$image[0]->profile_picture);
+        $image = User::find($id);
+            if($image->profile_picture) {
+                if(file_exists(public_path().'/public/Image/'.$image->profile_picture)){
+                    unlink(public_path().'/public/Image/'.$image->profile_picture);
+                }
             }
-            // DB::delete('delete from users where users.id = ?',[$id]);
-            DB::table('users')->where('id', $id)->delete();
-            
-        }
-        return redirect('/admin');
+            User::find($id)->delete();
+            return redirect('/admin');
     }
 
 }

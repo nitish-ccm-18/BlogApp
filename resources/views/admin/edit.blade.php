@@ -15,6 +15,11 @@
         <input type="email" class="form-control" id="UserEmail" placeholder="name@example.com" name="UserEmail" value="{{ $user[0]->email }}" disabled>
     
     </div>
+    <div class="mb-3">
+        <label for="UserPhone" class="form-label">Phone Number</label>
+        <input type="text" class="form-control" id="UserPhone" placeholder="name@example.com" name="UserPhone" value="{{ $user[0]->phone_number }}" >
+    
+    </div>
     <img src="{{ url('public/Image/'.$user[0]->profile_picture) }}" alt="User Profile Picture">
     <div class="mb-3">
         <label for="UserProfile" class="form-label">Profile Picture</label>

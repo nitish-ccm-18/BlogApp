@@ -48,3 +48,7 @@ Route::post('/admin/user/edit/{id}',[AdminController::class,'edit'])->middleware
 
 //Delete User
 Route::get('/admin/user/delete/{id}', [AdminController::class,'delete']);
+
+
+Route::get('/test-dummy-data', function() {
+});

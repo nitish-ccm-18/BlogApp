@@ -43,8 +43,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function identitycards():HasOne {
-        return $this->hasOne(Identitycard::class,'user_id');
+    public function identitycard():HasOne {
+        return $this->hasOne(Identitycard::class);
     }
 
     public function posts():HasMany {

@@ -55,19 +55,22 @@ class AdminController extends Controller
 
     // View User
     public function show($id) {
-        $user = DB::select('select * from users INNER JOIN identitycards ON users.id = identitycards.user_id where users.id = ?',[$id]);
-        return view('admin.show',['user'=>$user]);
+        $user = User::find($id);
+        $identitycard = $user->identitycard;
+        return view('admin.show',['user'=>$user, 'identitycard'=>$identitycard]);   
     }
 
     // Edit User Page
     public function editPage($id) {
-        $user = DB::select('select * from users INNER JOIN identitycards ON users.id = identitycards.user_id where users.id = ?',[$id]);
-        return view('admin.edit',['user'=>$user]);
+        $user = User::find($id);
+        $identitycard = $user->identitycard;
+        return view('admin.edit',['user'=>$user, 'identitycard'=>$identitycard]);
     }
 
     // edit User
     public function edit(Request $request,$id) {
         $filename = "";
+
         if($request->file('UserProfile') ){
             // remove existing file
             $image =  User::find($id);;
@@ -79,35 +82,29 @@ class AdminController extends Controller
             $filename= time().$file->getClientOriginalName();
             $file-> move(public_path('public/Image'), $filename);
         }
+
         $name = $request->input('UserName');
         $phone = $request->input('UserPhone');
 
         if($filename == "") {
-            $user = new User;
-            $user = User::find($id);
-            $user->name = $name;
-            $user->save();
+            User::where('id',$id)->update([
+                 'name' => $name
+            ]);
 
-            $identitycard = new Identitycard;
-            $identitycard = Identitycard::where('user_id',$id);
-            $identitycard->phone_number = $phone;
-            $identitycard->save();
-
+            Identitycard::where('user_id',$id)->update([
+                'phone_number' => $phone
+            ]);
         }
         else {
-            $user = new User;
-            $user = User::find($id);
-            $user->name = $name;
-            $user->profile_picture = $filename;
-            $user->save();
+            User::where('id',$id)->update([
+                 'name' => $name,
+                 'profile_picture' => $filename
+            ]);
 
-            $identitycard = new Identitycard;
-            $identitycard = Identitycard::where('user_id',$id);
-            $identitycard->phone_number = $phone;
-            $identitycard->save();
+            Identitycard::where('user_id',$id)->update([
+                'phone_number' => $phone
+            ]);
         }
-        return $request::all();
-        
         return redirect('/admin');
     }
 

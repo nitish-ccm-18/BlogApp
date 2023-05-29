@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <a href="/admin/users/create" class="btn btn-primary">Add User</a>
+            <a href="/admin/create" class="btn btn-primary">Add User</a>
             <div class="card">
                 <h1 class="text-center">Admin Area</h1>
                 <div class="card-header">{{ __('Dashboard') }}</div>
@@ -23,6 +23,7 @@
                 <tr>
                     <th>Profile Picture</th>
                     <th>Name</th>
+                    <th>Email</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -30,8 +31,9 @@
             
                 @foreach ($users as $user)
                 <tr>
-                    <td><img src="{{ url('public/Image/Users/'.$user->profile_picture) }}" alt="User Profile Picture" height="50" width="50"></td>
+                    <td><img src="{{ url('public/Image/Users'.$user->profile_picture) }}" alt="User Profile Picture" height="50" width="50"></td>
                     <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
                     <td><a href="/admin/users/show/{{ $user->id }}">Show</a></td>
                     <td><a href="/admin/users/edit/{{ $user->id }}">Edit</a></td>
                     <td><a href="/admin/users/delete/{{ $user->id }}">Delete</a></td>

@@ -4,7 +4,7 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="card" style="width: 18rem;">
-        <img src="{{ url('public/Image/'.$user->profile_picture) }}" alt="User Profile Picture">
+        <img src="{{ url('public/Image/Users/'.$user->profile_picture) }}" alt="User Profile Picture">
         <div class="card-body">
           <h5 class="card-title"><strong>Full Name </strong>{{ $user->name }}</h5>
           <p class="card-text"><strong>Email </strong>{{ $user->email }}</p>

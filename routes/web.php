@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PostController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,41 +16,55 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+// Show welcome page
+Route::view('/','welcome');
+
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// User Profile->Only authenticated user can see this page
-Route::get('/users/profile', [UserController::class,'showProfile'])->middleware('auth');
+Route::middleware('isAdmin')->group (function() {
+    // Admin Home Controller
+    Route::get('/admin',[AdminController::class,'index']);
 
+    // Admin Pages for User
+    Route::get('/admin/users/create',[AdminController::class,'createPage']);
+    Route::get('/admin/users/show/{id}',[AdminController::class,'show']);
+    Route::get('/admin/users/edit/{id}',[AdminController::class,'editPage']);
 
-// Get User Profile Edit Page
-Route::get('/users/profile/edit', [UserController::class,'editProfilePage'])->middleware('auth');
-
-// Edit Profile->Only authenticated user can see this page
-Route::post('/users/profile/edit', [UserController::class,'editProfile'])->middleware('auth');
-
-// Admin Home Controller
-Route::get('/admin',[AdminController::class,'index'])->middleware('isAdmin');
-
-// Admin Create User
-Route::get('/admin/user/create',[AdminController::class,'createPage'])->middleware('isAdmin');
-Route::post('/admin/user/create',[AdminController::class,'create'])->middleware('isAdmin');
-
-// Show User Page
-Route::get('/admin/user/show/{id}',[AdminController::class,'show'])->middleware('isAdmin');;
-
-// Edit User page
-Route::get('/admin/user/edit/{id}',[AdminController::class,'editPage'])->middleware('isAdmin');;
-Route::post('/admin/user/edit/{id}',[AdminController::class,'edit'])->middleware('isAdmin');
-
-//Delete User
-Route::get('/admin/user/delete/{id}', [AdminController::class,'delete']);
-
-
-Route::get('/test-dummy-data', function() {
+    // Admin Operations Related to User
+    Route::post('/admin/users/create',[AdminController::class,'create']);
+    Route::post('/admin/users/edit/{id}',[AdminController::class,'edit']);
+    Route::get('/admin/users/delete/{id}', [AdminController::class,'delete']);
 });
+
+
+Route::middleware('auth')->group (function() {
+  
+    // Post Pages
+    Route::get('/posts',[PostController::class,'index']);
+
+    //User Pages
+    Route::get('/users/profile/edit', [UserController::class,'editProfilePage']);
+
+
+    // User Operations
+    Route::get('/users/profile', [UserController::class,'showProfile']);
+    Route::post('/users/profile/edit', [UserController::class,'editProfile']);
+
+    // Post Pages
+    Route::get('/posts/create',[PostController::class,'createPage']);
+    Route::get('/posts/edit/{id}',[PostController::class,'editPage']);
+    Route::get('/posts/show/{id}',[PostController::class,'showPage']);
+
+    // Post Operations
+    Route::post('/posts/create',[PostController::class,'create']);
+    Route::post('/posts/edit/{id}',[PostController::class,'edit']);
+    Route::get('/posts/delete/{id}',[PostController::class,'delete']);
+
+
+});
+
+

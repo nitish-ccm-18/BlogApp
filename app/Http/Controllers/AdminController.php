@@ -19,20 +19,20 @@ class AdminController extends Controller
 
     // createUserPage
     public function createPage() {
-        return view('admin.create');
+        return view('admin.users.create');
     }
 
 
     // Create User
     public function create(Request $request) {
 
-
         $picture = $request->file('UserProfile');
+
         // Store filename as per database storage
         $filename = "";
         if($picture != "" ) {
             $filename = time().$picture->getClientOriginalName();
-            $picture->move(public_path('public/Image'), $filename);
+            $picture->move(public_path('public/Image/Users'), $filename);
         }
 
         // Save user values to users table
@@ -57,30 +57,30 @@ class AdminController extends Controller
     public function show($id) {
         $user = User::find($id);
         $identitycard = $user->identitycard;
-        return view('admin.show',['user'=>$user, 'identitycard'=>$identitycard]);   
+        return view('admin.users.show',['user'=>$user, 'identitycard'=>$identitycard]);   
     }
 
     // Edit User Page
     public function editPage($id) {
         $user = User::find($id);
         $identitycard = $user->identitycard;
-        return view('admin.edit',['user'=>$user, 'identitycard'=>$identitycard]);
+        return view('admin.users.edit',['user'=>$user, 'identitycard'=>$identitycard]);
     }
 
     // edit User
     public function edit(Request $request,$id) {
         $filename = "";
 
-        if($request->file('UserProfile') ){
+        if($request->file('UserProfile')){
             // remove existing file
             $image =  User::find($id);;
-            if(file_exists(public_path().'/public/Image/'.$image->profile_picture) && $image->profile_picture){
-                unlink(public_path().'/public/Image/'.$image->profile_picture);
+            if(file_exists(public_path().'/public/Image/Users/'.$image->profile_picture) && $image->profile_picture){
+                unlink(public_path().'/public/Image/Users/'.$image->profile_picture);
             }
             
             $file= $request->file('UserProfile');
             $filename= time().$file->getClientOriginalName();
-            $file-> move(public_path('public/Image'), $filename);
+            $file-> move(public_path('public/Image/Users'), $filename);
         }
 
         $name = $request->input('UserName');
@@ -112,8 +112,8 @@ class AdminController extends Controller
     public function delete($id) {
         $image = User::find($id);
             if($image->profile_picture) {
-                if(file_exists(public_path().'/public/Image/'.$image->profile_picture)){
-                    unlink(public_path().'/public/Image/'.$image->profile_picture);
+                if(file_exists(public_path().'/public/Image/Users'.$image->profile_picture)){
+                    unlink(public_path().'/public/Image/Users'.$image->profile_picture);
                 }
             }
             User::find($id)->delete();
@@ -121,3 +121,5 @@ class AdminController extends Controller
     }
 
 }
+
+

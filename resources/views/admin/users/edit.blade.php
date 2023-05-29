@@ -3,11 +3,11 @@
 
 @section('content')
 <div class="row justify-content-center">
-<form action="/admin/user/edit/{{ $user->id }}" method="post" class="col-md-8 " enctype="multipart/form-data">
+<form action="/admin/users/edit/{{ $user->id }}" method="post" class="col-md-8 " enctype="multipart/form-data">
     @csrf
     <div class="mb-3">
         <label for="UserName" class="form-label">Full Name</label>
-        <input type="text" class="form-control" id="UserEmail" placeholder="John Doe" name="UserName" value="{{ $user->name }}">
+        <input type="text" class="form-control" id="UserEmail" placeholder="John Doe" name="UserName" value="{{ $->name }}">
     
     </div>
     <div class="mb-3">
@@ -20,7 +20,7 @@
         <input type="text" class="form-control" id="UserPhone" placeholder="name@example.com" name="UserPhone" value="{{ $identitycard->phone_number }}" >
     
     </div>
-    <img src="{{ url('public/Image/'.$user->profile_picture) }}" alt="User Profile Picture">
+    <img src="{{ url('public/Image/Users/'.$user->profile_picture) }}" alt="User Profile Picture">
     <div class="mb-3">
         <label for="UserProfile" class="form-label">Profile Picture</label>
         <input type="file" class="form-control" id="UserProfile" placeholder="UserProfilePicture" name="UserProfile">

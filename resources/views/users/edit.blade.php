@@ -16,7 +16,7 @@
     
     </div>
     <div style="height : 200px; width : 200px; border:2px solid red">
-        <img src="{{ url('public/Image/'.$user->profile_picture) }}" alt="User Profile Picture">
+        <img src="{{ url('public/Image/users/'.$user->profile_picture) }}" alt="User Profile Picture">
     </div>
     <div class="mb-3">
         <label for="UserProfile" class="form-label">Profile Picture</label>

@@ -3,7 +3,8 @@
 
 @section('content')
 <div class="row justify-content-center">
-<form action="/admin/user/create" method="post" class="col-md-8 " enctype="multipart/form-data">
+    <h1 class="text-center">Create A New User</h1>
+<form action="/admin/users/create" method="post" class="col-md-8 " enctype="multipart/form-data">
     @csrf
     <div class="mb-3">
         <label for="UserName" class="form-label">Full Name</label>
